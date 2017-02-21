@@ -11,7 +11,7 @@ def log_current_date():
     return time.strftime('%Y%m%d')
 
 
-class Logger(object):
+class MyLogger(object):
     def __init__(self, log='[163news]'):
         self.logger = logging.getLogger(log)
         self.logger.setLevel(logging.DEBUG)
@@ -43,6 +43,6 @@ class Logger(object):
 
 
 if __name__ == '__main__':
-    l = Logger()
+    l = MyLogger()
     l.get_logger().error('xxx123')
     l.get_logger().info('456789')
