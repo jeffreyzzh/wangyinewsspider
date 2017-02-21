@@ -6,6 +6,10 @@ import re
 
 
 class URLmanager(object):
+    def __init__(self, hot_num, new_num):
+        self.hotcomment_num = hot_num
+        self.newcomment_num = new_num
+
     regex_dict = {
         'filter_remark': re.compile('bbs/(.*?)\.html')
     }
@@ -82,6 +86,12 @@ class URLmanager(object):
     HOT_COMMENT_URL = 'http://comment.news.163.com/api/v1/products/a2869674571f77b5a0867c3d71db5856/threads/{}/comments/hotList?limit={}'
     NEW_COMMENT_URL = 'http://comment.news.163.com/api/v1/products/a2869674571f77b5a0867c3d71db5856/threads/{}/comments/newList?limit={}'
 
+    def get_hotcomment_url(self, channel):
+        return self.HOT_COMMENT_URL.format(channel, self.hotcomment_num)
+
+    def get_newcomment_url(self, channel):
+        return self.NEW_COMMENT_URL.format(channel, self.newcomment_num)
+
     def ajaxdict_by_crawl_channels(self, channels):
         """
         对普通新闻做特殊处理，每个子频道是一个独立的存储dict，
@@ -90,6 +100,8 @@ class URLmanager(object):
         :return: ajax_list_dict
         """
         result = dict()
+        if not channels:
+            return result
         for channel in channels:
             return_list = list()
             channelinfo = self.CRAWL_URLS.get(channel)
@@ -106,13 +118,13 @@ class URLmanager(object):
             result[channel] = return_list
         return result
 
-    def hotcomment_ajax_by_commenturl(self, commenturl, nums=40):
+    def hotcomment_ajax_by_commenturl(self, commenturl):
         new_num = re.search(self.regex_dict['filter_remark'], commenturl)
-        return self.HOT_COMMENT_URL.format(new_num.group(1), nums)
+        return self.HOT_COMMENT_URL.format(new_num.group(1), self.hotcomment_num)
 
-    def newcomment_ajax_by_commenturl(self, commenturl, nums=10):
+    def newcomment_ajax_by_commenturl(self, commenturl):
         new_num = re.search(self.regex_dict['filter_remark'], commenturl)
-        return self.NEW_COMMENT_URL.format(new_num.group(1), nums)
+        return self.NEW_COMMENT_URL.format(new_num.group(1), self.newcomment_num)
 
     # def commenturl_filterlist_by_channel(self, channel):
     #     channel_coll = DbTool.get_mongocoll_by_channel(channel)
