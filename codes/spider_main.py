@@ -8,6 +8,7 @@ from codes.spider_base import BaseClass
 from codes.spider_urlmanager import URLmanager
 from codes.spider_downloader import URLdowner
 from codes.spider_parser import URLparser
+from codes.spider_datahandler import Datahandler
 from settings import base_setting
 from multiprocessing.dummy import Pool
 
@@ -21,11 +22,15 @@ class SpiderMain(object):
                  thread_num,
                  hotcomment_num,
                  newcomment_num,
-                 crawl_channels):
+                 crawl_channels,
+                 host,
+                 port,
+                 dbname):
         self.logger = BaseClass.getlogger()
         self.manager = URLmanager(hot_num=hotcomment_num, new_num=newcomment_num)
         self.downloader = URLdowner()
         self.parser = URLparser()
+        self.datahandler = Datahandler(host=host, port=port, dbname=dbname)
         self.crawl_channels = crawl_channels
         self.thread_num = thread_num
 
@@ -40,16 +45,20 @@ class SpiderMain(object):
         p.map(self.do_by_ajaxurl, urls)
 
     def do_by_ajaxurl(self, url):
+        import json
         dochannel = re.findall(self.regex_dict['channel_name'], url)
         cont = self.downloader.ajax_fetch(url)
         new_cont = self.parser.parse_ajax_channel(cont, dochannel[0])
-        print(new_cont)
+        for new in new_cont:
+            info = json.dumps(new, ensure_ascii=False, indent=4)
+            self.datahandler.test_handler_new(info)
 
 
 if __name__ == '__main__':
     starttime = time.time()
     # lists = base_setting.CRAWL_LIST
     lists = ['tech']
-    m = SpiderMain(thread_num=4, hotcomment_num=40, newcomment_num=20, crawl_channels=lists)
+    m = SpiderMain(thread_num=4, hotcomment_num=40, newcomment_num=20, crawl_channels=lists, host='localhost',
+                   port=27017, dbname='163news')
     m.domain()
     print('{0:.6f}'.format(time.time() - starttime))
