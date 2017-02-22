@@ -21,7 +21,7 @@ class SpiderMain(object):
                  thread_num,
                  hotcomment_num,
                  newcomment_num,
-                 crawl_channels=base_setting.CRAWL_LIST):
+                 crawl_channels):
         self.logger = BaseClass.getlogger()
         self.manager = URLmanager(hot_num=hotcomment_num, new_num=newcomment_num)
         self.downloader = URLdowner()
