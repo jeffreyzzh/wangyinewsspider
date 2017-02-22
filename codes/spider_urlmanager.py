@@ -36,7 +36,7 @@ class URLmanager(object):
             'max': 8,
             'description': '普通频道，3个子频道：社会，国际，国内'
         },
-        'sport': {
+        'sports': {
             'channels': ['index', 'allsports', 'cba', 'nba', 'china', 'world'],
             'ajax_url': 'http://sports.163.com/special/000587PR/newsdata_n_{}.js',
             'ajax_urls': 'http://sports.163.com/special/000587PR/newsdata_n_{}_0{}.js',

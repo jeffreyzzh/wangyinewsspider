@@ -4,6 +4,7 @@
 
 import json
 import re
+import traceback
 from codes.spider_base import BaseClass
 from codes.spider_downloader import URLdowner
 
@@ -26,7 +27,7 @@ class URLparser(object):
     def __init__(self):
         self.logger = BaseClass.getlogger()
 
-    def parse_ajax_channel(self, cont):
+    def parse_ajax_channel(self, cont, dochannel):
         if not cont:
             return None
         cont = re.search('(\[.*\])', cont.strip(), re.S).group()
@@ -42,17 +43,20 @@ class URLparser(object):
         channelnames = re.findall(self.regex_dict['channelnames'], cont)
         keywords = list()
         for key in o_keywords:
-            try:
-                key = key.replace(' ', '')
-                k_infos = key.split('\n,')
-                n_infos = []
-                for each in k_infos:
-                    each = each.replace('${type}', 'news.163.com')
-                    each_dict = json.loads(each)
-                    n_infos.append(each_dict)
-                keywords.append(n_infos)
-            except Exception as e:
-                self.logger.error(e)
+            key = key.replace(' ', '')
+            if not key:
+                continue
+            k_infos = key.split('\n,')
+            n_infos = []
+            for each in k_infos:
+                each = each.replace('${type}', 'news.163.com')
+                each_dict = json.loads(each)
+                n_infos.append(each_dict)
+            keywords.append(n_infos)
+
+        if len(channelnames) == 0:
+            for i in range(len(titles)):
+                channelnames.append(dochannel)
 
         news = []
         for title, docurl, commenturl, timeum, tlink, label, keyword, time, newstype, channelname in zip(

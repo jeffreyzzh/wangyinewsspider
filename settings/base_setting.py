@@ -6,7 +6,7 @@ CRAWL_LIST = [
     'shehui',
     'guoji',
     'guonei',
-    'sport',
+    'sports',
     'ent',
     'money',
     'tech',
