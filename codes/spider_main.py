@@ -45,7 +45,6 @@ class SpiderMain(object):
         p.map(self.do_by_ajaxurl, urls)
 
     def do_by_ajaxurl(self, url):
-        import json
         dochannel = re.findall(self.regex_dict['channel_name'], url)
         cont = self.downloader.ajax_fetch(url)
         new_cont = self.parser.parse_ajax_channel(cont, dochannel[0])

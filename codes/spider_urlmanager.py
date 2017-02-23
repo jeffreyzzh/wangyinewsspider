@@ -140,7 +140,7 @@ class URLmanager(object):
 
 
 if __name__ == '__main__':
-    um = URLmanager()
+    um = URLmanager(hot_num=40, new_num=20)
     channels = ['shehui', 'guoji', 'guonei', 'lady']
     for k, v in um.ajaxdict_by_crawl_channels(channels).items():
         print(k)
