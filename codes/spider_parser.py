@@ -76,7 +76,8 @@ class URLparser(object):
                 'channelname': channelname
             }
             filter_remark = re.search(self.regex_dict['filter_remark'], commenturl)
-            dict_info['filter_remark'] = filter_remark.group(1)
+            if filter_remark:
+                dict_info['filter_remark'] = filter_remark.group(1)
             news.append(dict_info)
         return news
 

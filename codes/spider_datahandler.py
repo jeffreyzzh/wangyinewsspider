@@ -4,6 +4,7 @@
 
 import pymongo
 import os
+import json
 from codes.spider_base import BaseClass
 
 
@@ -32,10 +33,12 @@ class Datahandler(object):
 
     def test_handler_new(self, new):
         filename = self.init_testdir()
-        if not new or not isinstance(new, str):
+        if not new or not isinstance(new, dict):
             self.logger.error('data is empty')
-        with open(filename, 'a', encoding='gbk') as f:
-            f.write(new)
+        jsonstr = json.dumps(new, ensure_ascii=False, indent=4)
+        with open(filename, 'a', encoding='utf-8') as f:
+            f.write(jsonstr)
+            f.write(',\n')
 
     def init_testdir(self):
         program_path = os.path.split(os.path.abspath('.'))[0]
@@ -43,7 +46,7 @@ class Datahandler(object):
         if not os.path.exists(logspath):
             os.mkdir(logspath)
         from codes.spider_logger import log_current_date
-        return os.path.join(logspath, '{}test.txt'.format(log_current_date()))
+        return os.path.join(logspath, '{}_data.txt'.format(log_current_date()))
 
 
 if __name__ == '__main__':

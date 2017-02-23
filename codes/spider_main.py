@@ -50,8 +50,7 @@ class SpiderMain(object):
         cont = self.downloader.ajax_fetch(url)
         new_cont = self.parser.parse_ajax_channel(cont, dochannel[0])
         for new in new_cont:
-            info = json.dumps(new, ensure_ascii=False, indent=4)
-            self.datahandler.test_handler_new(info)
+            self.datahandler.test_handler_new(new)
 
 
 if __name__ == '__main__':
