@@ -13,3 +13,6 @@ CRAWL_LIST = [
     'lady',
     'edu'
 ]
+
+FILELOGLEVEL = 4
+STREAMLOGLEVEL = 4

@@ -2,6 +2,7 @@
 # 2017/2/18 0018
 # JEFF
 
+from settings import base_setting
 from codes.spider_logger import MyLogger
 
 
@@ -9,7 +10,7 @@ class BaseClass(object):
     def __init__(self):
         pass
 
-    logger = MyLogger()
+    logger = MyLogger(base_setting.FILELOGLEVEL, base_setting.STREAMLOGLEVEL)
 
     @staticmethod
     def getlogger():

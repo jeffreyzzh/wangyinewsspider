@@ -29,6 +29,12 @@ class URLparser(object):
         self.logger = BaseClass.getlogger()
 
     def parse_ajax_channel(self, cont, dochannel):
+        """
+        解析ajax url请求内容
+        :param cont: list,每一个元素是一个新闻dict
+        :param dochannel: 爬取的频道
+        :return:
+        """
         if not cont:
             return None
         cont = re.search('(\[.*\])', cont.strip(), re.S).group()
@@ -108,6 +114,7 @@ class URLparser(object):
             result_info['comments'] = comment_list
             result_info['newListSize'] = dict_json.get('newListSize') if dict_json.get('newListSize') else len(
                 comment_list)
+            result_info['commentSize'] = len(comment_list)
             return result_info
         except Exception as e:
             self.logger.log(e)
