@@ -9,7 +9,6 @@ from codes.spider_urlmanager import URLmanager
 from codes.spider_downloader import URLdowner
 from codes.spider_parser import URLparser
 from codes.spider_datahandler import Datahandler
-from settings import base_setting
 from multiprocessing.dummy import Pool
 
 
@@ -24,13 +23,12 @@ class SpiderMain(object):
                  newcomment_num,
                  crawl_channels,
                  host,
-                 port,
-                 dbname):
+                 port):
         self.logger = BaseClass.getlogger()
         self.manager = URLmanager(hot_num=hotcomment_num, new_num=newcomment_num)
         self.downloader = URLdowner()
         self.parser = URLparser()
-        self.datahandler = Datahandler(host=host, port=port, dbname=dbname)
+        self.datahandler = Datahandler(host=host, port=port)
         self.crawl_channels = crawl_channels
         self.thread_num = thread_num
         self.hotcomment_num = hotcomment_num
@@ -51,14 +49,15 @@ class SpiderMain(object):
         dochannel = re.findall(self.regex_dict['channel_name'], url)
         cont = self.downloader.ajax_fetch(url)
         new_cont = self.parser.parse_ajax_channel(cont, dochannel[0])
-        # 处理评论
         for new in new_cont:
+            # 处理评论
             if not new.get('commenturl'):
                 self.datahandler.test_handler_new(new)
                 continue
             hotc, newc = self.handler_comment(new)
             new['hotcomment'] = hotc
             new['newcomment'] = newc
+            # 插入数据库
             self.datahandler.test_handler_new(new)
 
     def handler_comment(self, new):
@@ -90,7 +89,7 @@ if __name__ == '__main__':
     starttime = time.time()
     # lists = base_setting.CRAWL_LIST
     lists = ['tech']
-    m = SpiderMain(thread_num=8, hotcomment_num=10, newcomment_num=10, crawl_channels=lists, host='localhost',
-                   port=27017, dbname='163news')
+    m = SpiderMain(thread_num=4, hotcomment_num=10, newcomment_num=10, crawl_channels=lists, host='localhost',
+                   port=27017)
     m.domain()
     print('{0:.6f}'.format(time.time() - starttime))

@@ -5,6 +5,7 @@
 import json
 import re
 import traceback
+from tools.common_tools import TimeTool
 from codes.spider_base import BaseClass
 from codes.spider_downloader import URLdowner
 
@@ -84,6 +85,7 @@ class URLparser(object):
             filter_remark = re.search(self.regex_dict['filter_remark'], commenturl)
             if filter_remark:
                 dict_info['filter_remark'] = filter_remark.group(1)
+            dict_info['spider_time'] = TimeTool.current_time()
             news.append(dict_info)
         return news
 

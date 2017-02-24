@@ -2,6 +2,7 @@
 # 2017/2/21 0021
 # JEFF
 
+# 爬取相关
 CRAWL_LIST = [
     'shehui',
     'guoji',
@@ -13,6 +14,11 @@ CRAWL_LIST = [
     'lady',
     'edu'
 ]
+CRAWL_DELAY = 1
 
+# 日志相关
 FILELOGLEVEL = 4
-STREAMLOGLEVEL = 4
+STREAMLOGLEVEL = 2
+
+# 数据相关
+MONGODB = '163news'

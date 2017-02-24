@@ -6,13 +6,14 @@ import pymongo
 import os
 import json
 from codes.spider_base import BaseClass
+from settings.base_setting import MONGODB
 
 
 class Datahandler(object):
-    def __init__(self, host, port, dbname):
+    def __init__(self, host, port):
         self.logger = BaseClass.getlogger()
         client = pymongo.MongoClient(host=host, port=port)
-        db = client[dbname]
+        db = client[MONGODB]
         self.coll = {
             'shehui': db['shehui_coll'],
             'guoji': db['guoji_coll'],
