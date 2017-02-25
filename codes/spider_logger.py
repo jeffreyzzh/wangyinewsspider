@@ -52,7 +52,7 @@ class MyLogger(object):
         return self.logger
 
     def init_logsdir(self):
-        program_path = os.path.split(os.path.abspath('.'))[0]
+        program_path = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
         logspath = os.path.join(program_path, 'logs')
         if not os.path.exists(logspath):
             os.mkdir(logspath)

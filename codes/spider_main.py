@@ -35,7 +35,7 @@ class SpiderMain(object):
         self.newcomment_num = newcomment_num
 
     def domain(self):
-        channel_dict = m.manager.ajaxdict_by_crawl_channels(self.crawl_channels)
+        channel_dict = self.manager.ajaxdict_by_crawl_channels(self.crawl_channels)
         for k, v in channel_dict.items():
             self.do_by_channel(k, v)
 

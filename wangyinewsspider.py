@@ -19,7 +19,7 @@ def parse_args():
 
     parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
 
-    parses.add_argument('-list', dest='crawllist', help='抓取的频道', default=CRAWL_LIST, type=list)
+    parses.add_argument('-l', dest='crawllist', help='抓取的频道', default='tech', type=str)
 
     parses.add_argument('-hots', dest='hotnum', help='抓取热门评论数', default=40, type=int)
 
@@ -40,4 +40,11 @@ if __name__ == '__main__':
     print('抓取最新评论数', arg.newnum)
     print('mongodb的主机地址', arg.host)
     print('mongodb的连接端口', arg.port)
-    # SpiderMain(arg.threadnum, arg.hotnum, arg.newnum, arg.crawllist, arg.host, arg.port)
+
+    crawls = arg.crawllist.split(',')
+    for each in crawls:
+        if each not in CRAWL_LIST:
+            crawls.remove(each)
+    print(crawls)
+    spider = SpiderMain(arg.threadnum, arg.hotnum, arg.newnum, crawls, arg.host, arg.port)
+    spider.domain()

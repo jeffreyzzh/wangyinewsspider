@@ -32,6 +32,14 @@ class Datahandler(object):
         channelname = new.get('channelname')
         self.coll.get(channelname).insert(new)
 
+    def filter_list_by_channel(self, channel):
+        remarks = self.coll.get(channel).find({'filter_remark': {'$exists': True}}, {'_id': 1, 'filter_remark': 1})
+        # remarks = self.coll.get(channel).find({}, {'filter_remark': 1, '_id': 0})
+        filters = list()
+        for each in remarks:
+            filters.append(each['filter_remark'])
+        return filters
+
     def test_handler_new(self, new):
         filename = self.init_testdir()
         if not new or not isinstance(new, dict):
@@ -42,7 +50,7 @@ class Datahandler(object):
             f.write(',\n')
 
     def init_testdir(self):
-        program_path = os.path.split(os.path.abspath('.'))[0]
+        program_path = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
         logspath = os.path.join(program_path, 'tests')
         if not os.path.exists(logspath):
             os.mkdir(logspath)
@@ -51,7 +59,5 @@ class Datahandler(object):
 
 
 if __name__ == '__main__':
-    dh = Datahandler(host='localhost', port=27017, dbname='163news')
-    lists = dh.coll['guonei'].find({'filter_remark': {'$exists': False}})
-    for i in lists:
-        print(i)
+    dh = Datahandler(host='localhost', port=27017)
+    dh.filter_list_by_channel('shehui')
