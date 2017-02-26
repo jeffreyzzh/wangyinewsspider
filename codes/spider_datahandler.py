@@ -12,8 +12,8 @@ from settings.base_setting import MONGODB
 class Datahandler(object):
     def __init__(self, host, port):
         self.logger = BaseClass.getlogger()
-        client = pymongo.MongoClient(host=host, port=port)
-        db = client[MONGODB]
+        self.client = pymongo.MongoClient(host=host, port=port)
+        db = self.client[MONGODB]
         self.coll = {
             'shehui': db['shehui_coll'],
             'guoji': db['guoji_coll'],
@@ -25,6 +25,9 @@ class Datahandler(object):
             'lady': db['lady_coll'],
             'edu': db['edu_coll'],
         }
+
+    def channel_news_count(self, channel):
+        return self.coll.get(channel).count()
 
     def handler_ajax_new(self, new):
         if not new or not isinstance(new, dict):
@@ -59,6 +62,7 @@ class Datahandler(object):
 
 
 if __name__ == '__main__':
-    dh = Datahandler(host='192.168.1.112', port=27017)
-    lists = dh.filter_list_by_channel('shehui')
-    print(len(lists))
+    dh = Datahandler(host='localhost', port=27017)
+    # lists = dh.filter_list_by_channel('shehui')
+    # print(len(lists))
+    print(dh.channel_news_count('tech'))

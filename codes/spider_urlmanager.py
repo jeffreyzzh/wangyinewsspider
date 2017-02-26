@@ -113,12 +113,14 @@ class URLmanager(object):
         return result
 
     def hotcomment_ajax_by_commenturl(self, commenturl):
-        new_num = re.search(self.regex_dict['filter_remark'], commenturl)
-        return self.HOT_COMMENT_URL.format(new_num.group(1), self.hotcomment_num)
+        # new_num = re.search(self.regex_dict['filter_remark'], commenturl)
+        # return self.HOT_COMMENT_URL.format(new_num.group(1), self.hotcomment_num)
+        return self.HOT_COMMENT_URL.format(self.commenturl_filter_remark(commenturl), self.hotcomment_num)
 
     def newcomment_ajax_by_commenturl(self, commenturl):
-        new_num = re.search(self.regex_dict['filter_remark'], commenturl)
-        return self.NEW_COMMENT_URL.format(new_num.group(1), self.newcomment_num)
+        # new_num = re.search(self.regex_dict['filter_remark'], commenturl)
+        # return self.NEW_COMMENT_URL.format(new_num.group(1), self.newcomment_num)
+        return self.NEW_COMMENT_URL.format(self.commenturl_filter_remark(commenturl), self.newcomment_num)
 
     def hotcomment_ajax_by_filter_remark(self, remark):
         return self.HOT_COMMENT_URL.format(remark, self.hotcomment_num)
@@ -126,17 +128,26 @@ class URLmanager(object):
     def newcomment_ajax_by_filter_remark(self, remark):
         return self.NEW_COMMENT_URL.format(remark, self.newcomment_num)
 
-    # def commenturl_filterlist_by_channel(self, channel):
-    #     channel_coll = DbTool.get_mongocoll_by_channel(channel)
-    #     urls = channel_coll.find({}, {'commenturl': 1, '_id': 0})
-    #     result_list = list()
-    #     for i in urls:
-    #         result_list.append(self.commenturl_filter_remark(i.get('commenturl')))
-    #     return result_list
-
     def commenturl_filter_remark(self, commenturl):
+        """
+        根据评论URL拿到唯一标识
+        :param commenturl: 评论URL
+        :return: 唯一标识
+        """
         new_num = re.search(self.regex_dict['filter_remark'], commenturl)
         return new_num.group(1)
+
+    def commenturl_filterlist_by_channel(self, channel_coll):
+        """
+        过滤列表
+        :param channel_coll: 查询的mongo集合
+        :return: 该集合的所有唯一标识
+        """
+        remarks = channel_coll.find({}, {'filter_remark': 1, '_id': 0})
+        result_list = list()
+        for each in remarks:
+            result_list.append(each['filter_remark'])
+        return result_list
 
 
 if __name__ == '__main__':

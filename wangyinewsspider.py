@@ -19,7 +19,7 @@ def parse_args():
 
     parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
 
-    parses.add_argument('-l', dest='crawllist', help='抓取的频道', default='tech', type=str)
+    parses.add_argument('-l', dest='crawllist', help='抓取的频道', default='shehui,guoji,guonei', type=str)
 
     parses.add_argument('-hots', dest='hotnum', help='抓取热门评论数', default=40, type=int)
 
@@ -27,7 +27,7 @@ def parse_args():
 
     parses.add_argument('-host', dest='host', help='mongodb的主机地址', default='localhost', type=str)
 
-    parses.add_argument('-port', dest='port', help='mongodb的连接端口', default=27012, type=int)
+    parses.add_argument('-port', dest='port', help='mongodb的连接端口', default=27017, type=int)
 
     return parses.parse_args()
 
@@ -41,10 +41,13 @@ if __name__ == '__main__':
     print('mongodb的主机地址', arg.host)
     print('mongodb的连接端口', arg.port)
 
-    crawls = arg.crawllist.split(',')
-    for each in crawls:
-        if each not in CRAWL_LIST:
-            crawls.remove(each)
-    print(crawls)
+    if arg.crawllist != 'all':
+        crawls = arg.crawllist.split(',')
+        for each in crawls:
+            if each not in CRAWL_LIST:
+                crawls.remove(each)
+    else:
+        crawls = CRAWL_LIST
+    print('处理列表', crawls)
     spider = SpiderMain(arg.threadnum, arg.hotnum, arg.newnum, crawls, arg.host, arg.port)
     spider.domain()
