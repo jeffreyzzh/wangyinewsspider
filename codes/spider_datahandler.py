@@ -59,5 +59,6 @@ class Datahandler(object):
 
 
 if __name__ == '__main__':
-    dh = Datahandler(host='localhost', port=27017)
-    dh.filter_list_by_channel('shehui')
+    dh = Datahandler(host='192.168.1.112', port=27017)
+    lists = dh.filter_list_by_channel('shehui')
+    print(len(lists))
