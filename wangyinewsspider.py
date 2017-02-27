@@ -3,6 +3,7 @@
 # author = JEFF
 
 import argparse
+import pymongo
 import sys
 from settings.base_setting import CRAWL_LIST
 from codes.spider_main import SpiderMain
@@ -19,7 +20,7 @@ def parse_args():
                'shehui(社会),guonei(国内),guoji(国际),sports(体育),ent(娱乐),' \
                'money(财经),tech(科技),lady(女性),edu(教育) 全频道抓取可输入all'
 
-    parses.add_argument('-l', dest='crawllist', help=arg_help, default=all, type=str)
+    parses.add_argument('-l', dest='crawllist', help=arg_help, default='all', type=str)
 
     parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
 
@@ -36,8 +37,22 @@ def parse_args():
     return parses.parse_args()
 
 
+def test_mongo(host, port):
+    client = pymongo.MongoClient(host=host, port=port)
+    db = client['163news']
+    coll = db['test']
+    coll.find().count()
+
+
 if __name__ == '__main__':
     arg = parse_args()
+    try:
+        test_mongo(host=arg.host, port=arg.port)
+    except Exception as e:
+        print(e)
+        print('未能连接主机：{},端口：{}的数据库，请检查MongoDB相关设置'.format(arg.host, arg.port))
+        sys.exit()
+
     print('抓取的频道', arg.crawllist)
     print('抓取的线程数', arg.threadnum)
     print('抓取的延迟时间', arg.delay)

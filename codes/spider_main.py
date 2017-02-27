@@ -6,6 +6,7 @@ import time
 import re
 import sys
 import threading
+import traceback
 from codes.spider_base import BaseClass
 from codes.spider_urlmanager import URLmanager
 from codes.spider_downloader import URLdowner
@@ -43,21 +44,25 @@ class SpiderMain(object):
         self.current_spider_channel = ''
 
     def domain(self):
-        channel_dict = self.manager.ajaxdict_by_crawl_channels(self.crawl_channels)
-        for k, v in channel_dict.items():
-            self.do_by_channel(k, v)
-        self.print_all_spider_info()
+        try:
+            channel_dict = self.manager.ajaxdict_by_crawl_channels(self.crawl_channels)
+            for k, v in channel_dict.items():
+                self.do_by_channel(k, v)
+            self.print_all_spider_info()
+        except Exception as e:
+            self.logger.error(e)
+            self.logger.error(traceback.format_exc())
 
     def do_by_channel(self, channel, urls):
         time.sleep(self.crawl_delay)
-        print('正在抓取频道{}'.format(channel))
+        print('开始抓取频道{}'.format(channel))
         self.current_spider_channel = channel
         self.channel_count[channel] = 0
         old_num = self.datahandler.channel_news_count(channel)
         p = Pool(self.thread_num)
         p.map(self.do_by_ajaxurl, urls)
         print()
-        print('频道抓取完成{}'.format(channel))
+        print('频道{}抓取完成'.format(channel))
         new_num = self.datahandler.channel_news_count(channel)
         self.channel_count[channel] = {
             'old': old_num,
@@ -148,7 +153,7 @@ if __name__ == '__main__':
     starttime = time.time()
     # lists = base_setting.CRAWL_LIST
     lists = ['tech']
-    m = SpiderMain(thread_num=4, hotcomment_num=10, newcomment_num=10, crawl_channels=lists, host='localhost',
-                   port=27017)
+    m = SpiderMain(thread_num=4, crawl_delay=1, hotcomment_num=10, newcomment_num=10, crawl_channels=lists,
+                   host='localhost', port=27017)
     m.domain()
     print('{0:.6f}'.format(time.time() - starttime))
