@@ -3,23 +3,25 @@
 # author = JEFF
 
 import argparse
+import sys
 from settings.base_setting import CRAWL_LIST
 from codes.spider_main import SpiderMain
 
 description = """\
-您好，欢迎使用。\r\n
-如果有任何的建议，可以给我邮件\r\n
-124303687@qq.com\r\n
-如果喜欢本项目，please fork or star! thx!
+hello world ! :)
 """
 
 
 def parse_args():
     parses = argparse.ArgumentParser(description=description)
 
-    parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
+    arg_help = '抓取的频道,可选频道：' \
+               'shehui(社会),guonei(国内),guoji(国际),sports(体育),ent(娱乐),' \
+               'money(财经),tech(科技),lady(女性),edu(教育) 全频道抓取可输入all'
 
-    parses.add_argument('-l', dest='crawllist', help='抓取的频道', default='shehui,guoji,guonei', type=str)
+    parses.add_argument('-l', dest='crawllist', help=arg_help, default=all, type=str)
+
+    parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
 
     parses.add_argument('-d', dest='delay', help='抓取的延迟时间（秒）', default=1.5, type=int)
 
@@ -36,8 +38,8 @@ def parse_args():
 
 if __name__ == '__main__':
     arg = parse_args()
-    print('抓取的线程数', arg.threadnum)
     print('抓取的频道', arg.crawllist)
+    print('抓取的线程数', arg.threadnum)
     print('抓取的延迟时间', arg.delay)
     print('抓取热门评论数', arg.hotnum)
     print('抓取最新评论数', arg.newnum)
