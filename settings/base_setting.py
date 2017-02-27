@@ -14,7 +14,7 @@ CRAWL_LIST = [
     'lady',
     'edu'
 ]
-CRAWL_DELAY = 1
+# CRAWL_DELAY = 1
 
 # 日志相关
 FILELOGLEVEL = 4

@@ -23,6 +23,7 @@ class SpiderMain(object):
 
     def __init__(self,
                  thread_num,
+                 crawl_delay,
                  hotcomment_num,
                  newcomment_num,
                  crawl_channels,
@@ -35,6 +36,7 @@ class SpiderMain(object):
         self.datahandler = Datahandler(host=host, port=port)
         self.crawl_channels = crawl_channels
         self.thread_num = thread_num
+        self.crawl_delay = crawl_delay
         self.hotcomment_num = hotcomment_num
         self.newcomment_num = newcomment_num
         self.channel_count = dict()
@@ -47,6 +49,7 @@ class SpiderMain(object):
         self.print_all_spider_info()
 
     def do_by_channel(self, channel, urls):
+        time.sleep(self.crawl_delay)
         print('正在抓取频道{}'.format(channel))
         self.current_spider_channel = channel
         self.channel_count[channel] = 0

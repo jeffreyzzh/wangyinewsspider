@@ -21,6 +21,8 @@ def parse_args():
 
     parses.add_argument('-l', dest='crawllist', help='抓取的频道', default='shehui,guoji,guonei', type=str)
 
+    parses.add_argument('-d', dest='delay', help='抓取的延迟时间（秒）', default=1.5, type=int)
+
     parses.add_argument('-hots', dest='hotnum', help='抓取热门评论数', default=40, type=int)
 
     parses.add_argument('-news', dest='newnum', help='抓取最新评论数', default=20, type=int)
@@ -36,6 +38,7 @@ if __name__ == '__main__':
     arg = parse_args()
     print('抓取的线程数', arg.threadnum)
     print('抓取的频道', arg.crawllist)
+    print('抓取的延迟时间', arg.delay)
     print('抓取热门评论数', arg.hotnum)
     print('抓取最新评论数', arg.newnum)
     print('mongodb的主机地址', arg.host)
@@ -48,6 +51,8 @@ if __name__ == '__main__':
                 crawls.remove(each)
     else:
         crawls = CRAWL_LIST
-    print('处理列表', crawls)
-    spider = SpiderMain(arg.threadnum, arg.hotnum, arg.newnum, crawls, arg.host, arg.port)
+    print('处理列表:', crawls, 'size:', len(crawls))
+    spider = SpiderMain(thread_num=arg.threadnum, crawl_delay=arg.delay, hotcomment_num=arg.hotnum,
+                        newcomment_num=arg.newnum, crawl_channels=crawls,
+                        host=arg.host, port=arg.port)
     spider.domain()
