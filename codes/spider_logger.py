@@ -5,6 +5,7 @@
 import os
 import time
 import logging
+from settings.base_setting import FILEKEEPDAYS as keepdays
 
 
 def log_current_date():
@@ -71,6 +72,7 @@ class MyLogger(object):
 
 
 if __name__ == '__main__':
-    l = MyLogger(2, 4)
-    l.get_logger().error('logger.test.error')
-    l.get_logger().info('logger.test.info')
+    # l = MyLogger(2, 4)
+    # l.get_logger().error('logger.test.error')
+    # l.get_logger().info('logger.test.info')
+    print(keepdays)
