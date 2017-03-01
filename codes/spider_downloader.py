@@ -22,9 +22,9 @@ class URLdowner(object):
         return self.fetch(url, 'utf-8')
 
     def fetch(self, url, encoding, count=1):
-        self.logger.info(url)
+        self.logger.info('fetch url >> {}'.format(url))
         if count >= self.CRAWL_COUNT + 1:
-            self.logger.error('url: {} to much error')
+            self.logger.error('url: {} to much error'.format(url))
             return None
         try:
             r = requests.get(url, timeout=self.CRAWL_TIMEOUTS)
@@ -32,7 +32,7 @@ class URLdowner(object):
             if not r.status_code == 404:
                 return r.text
             else:
-                self.logger.error('url: {} 404 Not Found')
+                self.logger.error('url: {} 404 Not Found'.format(url))
         except Exception as e:
             self.logger.error(e)
             if count == 5:

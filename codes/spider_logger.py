@@ -27,12 +27,12 @@ class MyLogger(object):
         if fileloglevel in [0, 1, 2, 3, 4, 5]:
             self.filelogleavel = fileloglevel
         else:
-            self.filelogleavel = 4
+            self.filelogleavel = 2
 
         if streamloglevel in [0, 1, 2, 3, 4, 5]:
             self.streamloglevel = streamloglevel
         else:
-            self.streamloglevel = 2
+            self.streamloglevel = 4
 
         fh = logging.FileHandler(self.logname)
         fh.setLevel(self.loger_level[self.filelogleavel])
@@ -52,14 +52,25 @@ class MyLogger(object):
         return self.logger
 
     def init_logsdir(self):
+        """
+        初始化日志文件夹
+        :return: None
+        """
         program_path = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
         logspath = os.path.join(program_path, 'logs')
         if not os.path.exists(logspath):
             os.mkdir(logspath)
         return os.path.join(logspath, '{}.log'.format(log_current_date()))
 
+    def clean_logs(self):
+        """
+        清理日志文件夹文件
+        :return: None
+        """
+        pass
+
 
 if __name__ == '__main__':
-    l = MyLogger(4, 2)
-    l.get_logger().error('xxx123')
-    l.get_logger().info('456789')
+    l = MyLogger(2, 4)
+    l.get_logger().error('logger.test.error')
+    l.get_logger().info('logger.test.info')

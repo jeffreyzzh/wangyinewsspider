@@ -44,14 +44,14 @@ class SpiderMain(object):
         self.current_spider_channel = ''
 
     def domain(self):
-        try:
-            channel_dict = self.manager.ajaxdict_by_crawl_channels(self.crawl_channels)
-            for k, v in channel_dict.items():
+        channel_dict = self.manager.ajaxdict_by_crawl_channels(self.crawl_channels)
+        for k, v in channel_dict.items():
+            try:
                 self.do_by_channel(k, v)
-            self.print_all_spider_info()
-        except Exception as e:
-            self.logger.error(e)
-            self.logger.error(traceback.format_exc())
+            except Exception as e:
+                self.logger.error(e)
+                self.logger.error(traceback.format_exc())
+        self.print_all_spider_info()
 
     def do_by_channel(self, channel, urls):
         time.sleep(self.crawl_delay)
@@ -74,6 +74,9 @@ class SpiderMain(object):
         dochannel = re.findall(self.regex_dict['channel_name'], url)
         cont = self.downloader.ajax_fetch(url)
         new_cont = self.parser.parse_ajax_channel(cont, dochannel[0])
+        if not new_cont:
+            self.logger.info('url {} parse data is none')
+            return
         current_collobject = self.datahandler.coll[self.current_spider_channel]
         filter_list = self.manager.commenturl_filterlist_by_channel(current_collobject)
         for new in new_cont:
@@ -141,9 +144,9 @@ class SpiderMain(object):
     def print_all_spider_info(self):
         print()
         for each in self.channel_count:
-            print('频道：', each, end='  ')
-            print('原有新闻数：', self.channel_count[each]['old'], end='  ')
-            print('新抓取新闻数：', self.channel_count[each]['add'], end='  ')
+            print('频道：', each, end='\t')
+            print('原有新闻数：', self.channel_count[each]['old'], end='\t')
+            print('新抓取新闻数：', self.channel_count[each]['add'], end='\t')
             print('现有新闻数：', self.channel_count[each]['new'])
         print('程序10秒后退出，快捷键Ctrl - z 马上退出')
         time.sleep(10)

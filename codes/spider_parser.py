@@ -38,7 +38,12 @@ class URLparser(object):
         """
         if not cont:
             return None
-        cont = re.search('(\[.*\])', cont.strip(), re.S).group()
+        if cont.strip() == "":
+            return None
+        cont = re.search('(\[.*\])', cont.strip(), re.S)
+        if not cont:
+            return None
+        cont = cont.group()
         titles = re.findall(self.regex_dict['titles'], cont)
         docurls = re.findall(self.regex_dict['docurls'], cont)
         commenturls = re.findall(self.regex_dict['commenturls'], cont)

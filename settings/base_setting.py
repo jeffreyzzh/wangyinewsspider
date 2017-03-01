@@ -17,8 +17,10 @@ CRAWL_LIST = [
 # CRAWL_DELAY = 1
 
 # 日志相关
-FILELOGLEVEL = 4
+FILELOGLEVEL = 2
 STREAMLOGLEVEL = 4
+# logs文件夹存储日志天数
+FILEKEEPDAYS = 7
 
 # 数据相关
 MONGODB = '163news'
