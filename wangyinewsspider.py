@@ -20,7 +20,7 @@ def parse_args():
                'shehui(社会),guonei(国内),guoji(国际),sports(体育),ent(娱乐),' \
                'money(财经),tech(科技),lady(女性),edu(教育) 全频道抓取可输入all'
 
-    parses.add_argument('-l', dest='crawllist', help=arg_help, default='money', type=str)
+    parses.add_argument('-l', dest='crawllist', help=arg_help, default='all', type=str)
 
     parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
 
