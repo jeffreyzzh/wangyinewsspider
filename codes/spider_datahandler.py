@@ -34,7 +34,6 @@ class Datahandler(object):
             self.logger.error('data is empty')
         channelname = new.get('channelname')
         self.coll.get(channelname).insert(new)
-        self.logger.info('coll [{0}] insert >> {1}'.format(channelname, new))
 
     def filter_list_by_channel(self, channel):
         remarks = self.coll.get(channel).find({'filter_remark': {'$exists': True}}, {'_id': 1, 'filter_remark': 1})

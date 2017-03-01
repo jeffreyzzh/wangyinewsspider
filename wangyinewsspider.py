@@ -24,7 +24,7 @@ def parse_args():
 
     parses.add_argument('-n', dest='threadnum', help='抓取的线程数', default=4, type=int)
 
-    parses.add_argument('-d', dest='delay', help='抓取的延迟时间（秒）', default=1.5, type=int)
+    parses.add_argument('-d', dest='delay', help='抓取的延迟时间（秒）', default=0, type=int)
 
     parses.add_argument('-hots', dest='hotnum', help='抓取热门评论数', default=40, type=int)
 
