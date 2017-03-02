@@ -7,6 +7,7 @@ import re
 import sys
 import threading
 import traceback
+import json
 from codes.spider_base import BaseClass
 from codes.spider_urlmanager import URLmanager
 from codes.spider_downloader import URLdowner
@@ -55,6 +56,7 @@ class SpiderMain(object):
 
     def do_by_channel(self, channel, urls):
         time.sleep(self.crawl_delay)
+        start_time = time.time()
         print('开始抓取频道{}'.format(channel))
         self.current_spider_channel = channel
         self.channel_count[channel] = 0
@@ -67,7 +69,8 @@ class SpiderMain(object):
         self.channel_count[channel] = {
             'old': old_num,
             'new': new_num,
-            'add': new_num - old_num
+            'add': new_num - old_num,
+            'time': time.time() - start_time
         }
 
     def do_by_ajaxurl(self, url):
@@ -105,7 +108,7 @@ class SpiderMain(object):
             self.datahandler.handler_ajax_new(new)
 
     def test_print_count(self, count):
-        print("\r抓取新闻数:", count, end="")
+        print("\r抓取新闻数:", count + 1, end="")
         sys.stdout.flush()
 
     def handler_comment(self, new):
@@ -144,11 +147,25 @@ class SpiderMain(object):
     def print_all_spider_info(self):
         print()
         for each in self.channel_count:
-            print('频道：', each, end='\t')
-            print('原有新闻数：', self.channel_count[each]['old'], end='\t')
-            print('新抓取新闻数：', self.channel_count[each]['add'], end='\t')
-            print('现有新闻数：', self.channel_count[each]['new'])
-        print('程序10秒后退出，快捷键Ctrl - z 马上退出')
+            info_dict = {
+                '频道': each,
+                '原有新闻数': self.channel_count[each]['old'],
+                '抓取新闻数': self.channel_count[each]['add'],
+                '现有新闻数': self.channel_count[each]['new'],
+                '用时': '{0:.6f}'.format(self.channel_count[each]['time'])
+            }
+            self.logger.error(info_dict)
+            # print('频道：{}'.format(each))
+            # print('原有新闻数：{}'.format(self.channel_count[each]['old']))
+            # print('新抓取新闻数：{}'.format(self.channel_count[each]['add']))
+            # print('现有新闻数：{}'.format(self.channel_count[each]['new']))
+            # print('用时： {0:.6f}'.format(self.channel_count[each]['time']))
+            # self.logger.error('频道：{}'.format(each))
+            # self.logger.error('原有新闻数：{}'.format(self.channel_count[each]['old']))
+            # self.logger.error('新抓取新闻数：{}'.format(self.channel_count[each]['add']))
+            # self.logger.error('现有新闻数：{}'.format(self.channel_count[each]['new']))
+            # self.logger.error('用时： {0:.6f}'.format(self.channel_count[each]['time']))
+        print('程序10秒后退出')
         time.sleep(10)
 
 

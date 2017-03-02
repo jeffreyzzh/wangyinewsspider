@@ -5,6 +5,11 @@
 import requests
 import traceback
 from codes.spider_base import BaseClass
+from tools.common_tools import getrandomua
+
+spiderheaders = {
+    'User-Agent': getrandomua()
+}
 
 
 # URL下载器
@@ -27,7 +32,7 @@ class URLdowner(object):
             self.logger.error('url: {} to much error'.format(url))
             return None
         try:
-            r = requests.get(url, timeout=self.CRAWL_TIMEOUTS)
+            r = requests.get(url, timeout=self.CRAWL_TIMEOUTS, headers=spiderheaders)
             r.encoding = encoding
             if not r.status_code == 404:
                 return r.text
@@ -41,6 +46,11 @@ class URLdowner(object):
 
 
 if __name__ == '__main__':
-    u = URLdowner()
-    cont = u.page_fetch('http://www.wawa.com')
-    print(cont)
+    # u = URLdowner()
+    # cont = u.page_fetch('http://www.wawa.com')
+    # print(cont)
+    import time
+
+    s = time.time()
+    print(headers)
+    print(time.time() - s)
