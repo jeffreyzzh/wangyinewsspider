@@ -30,14 +30,23 @@ class Datahandler(object):
         return self.coll.get(channel).count()
 
     def handler_ajax_new(self, new):
+        """
+        储存新闻内容
+        :param new:
+        :return:
+        """
         if not new or not isinstance(new, dict):
             self.logger.error('data is empty')
         channelname = new.get('channelname')
         self.coll.get(channelname).insert(new)
 
     def filter_list_by_channel(self, channel):
+        """
+        返回过滤列表
+        :param channel:
+        :return:
+        """
         remarks = self.coll.get(channel).find({'filter_remark': {'$exists': True}}, {'_id': 1, 'filter_remark': 1})
-        # remarks = self.coll.get(channel).find({}, {'filter_remark': 1, '_id': 0})
         filters = list()
         for each in remarks:
             filters.append(each['filter_remark'])

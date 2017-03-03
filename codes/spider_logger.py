@@ -3,13 +3,13 @@
 # JEFF
 
 import os
-import time
 import logging
+from tools.common_tools import TimeTool
 from settings.base_setting import FILEKEEPDAYS as keepdays
 
 
 def log_current_date():
-    return time.strftime('%Y%m%d')
+    return TimeTool.format_time(format_spec='%Y%m%d')
 
 
 class MyLogger(object):
@@ -75,4 +75,4 @@ if __name__ == '__main__':
     # l = MyLogger(2, 4)
     # l.get_logger().error('logger.test.error')
     # l.get_logger().info('logger.test.info')
-    print(keepdays)
+    print(log_current_date())

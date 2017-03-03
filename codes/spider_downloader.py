@@ -27,7 +27,7 @@ class URLdowner(object):
         return self.fetch(url, 'utf-8')
 
     def fetch(self, url, encoding, count=1):
-        self.logger.info('fetch url >> {}'.format(url))
+        self.logger.debug('fetch url >> {}'.format(url))
         if count >= self.CRAWL_COUNT + 1:
             self.logger.error('url: {} to much error'.format(url))
             return None

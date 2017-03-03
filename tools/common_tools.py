@@ -36,4 +36,5 @@ def getrandomua():
 
 
 if __name__ == '__main__':
-    print(getrandomua())
+    t = TimeTool.format_time(timex=1488520053, format_spec='%Y%m%d')
+    print(t)
