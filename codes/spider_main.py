@@ -84,8 +84,8 @@ class SpiderMain(object):
         current_collobject = self.datahandler.coll[self.current_spider_channel]
         filter_list = self.manager.commenturl_filterlist_by_channel(current_collobject)
         for new in new_cont:
-            if not new.get('filter_remark'):
-                continue
+            # if not new.get('filter_remark'):
+            #     continue
             if new.get('filter_remark') in filter_list:
                 continue
             # 线程加锁

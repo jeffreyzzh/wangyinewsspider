@@ -146,7 +146,9 @@ class URLmanager(object):
         remarks = channel_coll.find({}, {'filter_remark': 1, '_id': 0})
         result_list = list()
         for each in remarks:
-            result_list.append(each['filter_remark'])
+            filter_mark = each.get('filter_remark')
+            if filter_mark:
+                result_list.append(filter_mark)
         return result_list
 
 
