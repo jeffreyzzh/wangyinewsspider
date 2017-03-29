@@ -66,7 +66,9 @@ python wangyinewsspider.py -h
 ![start](https://raw.githubusercontent.com/jeffreyzzh/wangyinewsspider/master/imgs/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-03-05%20%E4%B8%8A%E5%8D%889.35.28.png)
 以后浏览新闻再也不用看广告啦~~~
 
+###更新
+1.2017/03/29 日志文件清理，只保存近期7个记录文件
+
 ###TODO
 1. 增加新闻的正文内容
-2. 汽车频道和房产频道
-3. 日志文件定期清理 
+2. 汽车频道和房产频道 

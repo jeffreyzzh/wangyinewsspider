@@ -49,6 +49,8 @@ class MyLogger(object):
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
+        self.clean_logs()
+
     def get_logger(self):
         return self.logger
 
@@ -68,11 +70,21 @@ class MyLogger(object):
         清理日志文件夹文件
         :return: None
         """
-        pass
+        program_path = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
+        logspath = os.path.join(program_path, 'logs')
+        clean_size = len(os.listdir(logspath)) - 7
+        if clean_size <= 0:
+            return
+        count = 0
+        for each in os.listdir(logspath):
+            os.remove(os.path.join(logspath, each))
+            count += 1
+            if count == clean_size:
+                break
 
 
 if __name__ == '__main__':
-    # l = MyLogger(2, 4)
+    l = MyLogger(2, 2)
     # l.get_logger().error('logger.test.error')
     # l.get_logger().info('logger.test.info')
-    print(log_current_date())
+    l.clean_logs()
